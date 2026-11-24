@@ -1,0 +1,201 @@
+/*
+ * Board, tiles and robot of Robo Maze, plus the theme variables (= skin "classic").
+ * Shared with the Reward Shop, which shows skin previews with the same classes.
+ */
+:root, [data-skin="classic"] {
+  --page-bg:
+    radial-gradient(1200px 600px at 10% -10%, #1d2a6b55, transparent),
+    radial-gradient(900px 500px at 110% 10%, #4c1d9533, transparent),
+    #0b1020;
+  --board-bg: #0a0f24;
+  --frame-bg: linear-gradient(145deg, #222c58, #121936);
+  --board-radius: 10px;
+  --floor-pattern: none;
+  --floor-line: #ffffff08;
+  --wall: linear-gradient(#4b5a8c, #34406b);
+  --wall-shadow: inset 0 -5px 0 #0004, inset 0 2px 0 #ffffff1a, inset 0 0 0 1px #0003;
+  --wall-radius: 0px;
+  --lock-bg: repeating-linear-gradient(45deg, #7c4a0b 0 7px, #925a12 7px 14px);
+  --lock-ring: #fbbf2455;
+  --lock-glow: #fbbf24;
+  --icon-color: inherit;
+  --goal-glow: #22c55e55;
+  --start-ring: #38bdf855;
+  --trail: #38bdf840;
+  --bot-body: linear-gradient(#bae6fd, #38bdf8 55%, #0284c7);
+  --bot-shade: #0369a1;
+  --bot-radius: 24%;
+  --bot-face: #0f172a;
+  --eye: #67e8f9;
+  --antenna: #f43f5e;
+
+  --bg: #0b1020;
+  --bg2: #111833;
+  --card: #151d3b;
+  --card-border: #26315c;
+  --text: #e8ecff;
+  --muted: #95a0c8;
+  --accent: #38bdf8;
+  --accent-2: #818cf8;
+  --good: #22c55e;
+  --bad: #f43f5e;
+  --warn: #f59e0b;
+
+  --floor: #1c2547;
+  --floor-alt: #1f2950;
+
+  --radius: 14px;
+}
+:root { --cell: 56px; }
+
+.board-frame {
+  padding: 10px;
+  border-radius: calc(var(--board-radius) + 8px);
+  background: var(--frame-bg);
+  box-shadow: 0 20px 50px #0008, inset 0 0 0 1px #ffffff10;
+}
+
+
+/* ---------- Board ---------- */
+.board {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--cell));
+  grid-auto-rows: var(--cell);
+  border-radius: var(--board-radius);
+  overflow: hidden;
+  background: var(--board-bg);
+}
+
+.cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  font-size: calc(var(--cell) * .46);
+  user-select: none;
+}
+.cell > * { grid-area: 1 / 1; }
+.cell.floor { background: var(--floor-pattern), var(--floor); box-shadow: inset 0 0 0 1px var(--floor-line); }
+.cell.floor.alt { background: var(--floor-pattern), var(--floor-alt); }
+.cell.wall {
+  background: var(--wall);
+  box-shadow: var(--wall-shadow);
+  border-radius: var(--wall-radius);
+}
+.cell.lock {
+  background: var(--lock-bg);
+  box-shadow: inset 0 0 0 2px var(--lock-ring);
+}
+.cell.lock span, .cell.goal span { color: var(--icon-color); }
+.cell.lock span { filter: drop-shadow(0 2px 2px #0008); transition: transform .2s; }
+.cell.lock.reachable { cursor: pointer; animation: lockPulse 1.3s ease-in-out infinite; z-index: 1; }
+.cell.lock.reachable:hover span { transform: scale(1.15) rotate(-8deg); }
+@keyframes lockPulse {
+  0%, 100% { box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--lock-glow) 70%, transparent), 0 0 0 0 transparent; }
+  50%      { box-shadow: inset 0 0 0 3px var(--lock-glow), 0 0 18px 3px color-mix(in srgb, var(--lock-glow) 55%, transparent); }
+}
+.cell.lock.shake { animation: shake .35s; }
+
+.cell.goal {
+  background: radial-gradient(circle, var(--goal-glow) 0%, transparent 70%), var(--floor-pattern), var(--floor);
+}
+.cell.goal span { animation: goalBob 1.6s ease-in-out infinite; }
+@keyframes goalBob { 50% { transform: translateY(-8%) scale(1.06); } }
+
+.cell .decor {
+  font-size: 58%;
+  opacity: .45;
+  transform: translate(22%, 22%);
+  pointer-events: none;
+}
+
+.cell.start::after {
+  content: "";
+  position: absolute; inset: 18%;
+  border: 2px dashed var(--start-ring);
+  border-radius: 50%;
+}
+
+.cell.visited::before {
+  content: "";
+  grid-area: 1 / 1;
+  width: 16%; height: 16%;
+  border-radius: 50%;
+  background: var(--trail);
+}
+
+.cell.unlocking { animation: unlockPop .6s ease; }
+@keyframes unlockPop {
+  0%   { background: #fde68a; transform: scale(.85); }
+  60%  { background: #86efac; transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- Robot ---------- */
+.robot {
+  position: absolute;
+  left: 0; top: 0;
+  width: var(--cell); height: var(--cell);
+  display: grid; place-items: center;
+  transform: translate(calc(var(--c) * var(--cell)), calc(var(--r) * var(--cell)));
+  transition: transform var(--move-ms, 220ms) cubic-bezier(.4, .1, .3, 1.2);
+  pointer-events: none;
+  z-index: 3;
+}
+.robot .bot {
+  position: relative;
+  width: 64%; height: 56%;
+  margin-top: 12%;
+  border-radius: var(--bot-radius);
+  background: var(--bot-body);
+  box-shadow: 0 6px 10px #0007, inset 0 -4px 0 var(--bot-shade), inset 0 2px 0 #ffffffaa;
+  transition: background .3s;
+}
+.robot .bot::before { /* antenna */
+  content: ""; position: absolute;
+  left: 47%; top: -26%;
+  width: 6%; height: 26%;
+  background: #94a3b8;
+}
+.robot .bot::after { /* antenna ball */
+  content: ""; position: absolute;
+  left: 50%; top: -40%;
+  width: 20%; aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: var(--bot-radius);
+  background: var(--antenna);
+  box-shadow: 0 0 8px var(--antenna);
+  animation: blink 1.4s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: .55; box-shadow: 0 0 2px var(--antenna); } }
+.robot .face {
+  position: absolute; inset: 20% 14% 30%;
+  background: var(--bot-face);
+  border-radius: calc(var(--bot-radius) * 1.25);
+  display: flex; align-items: center; justify-content: center; gap: 22%;
+  transition: transform .2s;
+}
+.robot .eye {
+  width: 20%; aspect-ratio: 1; border-radius: var(--bot-radius);
+  background: var(--eye); box-shadow: 0 0 6px var(--eye);
+}
+.robot[data-dir="left"]  .face { transform: translateX(-10%); }
+.robot[data-dir="right"] .face { transform: translateX(10%); }
+.robot[data-dir="up"]    .face { transform: translateY(-14%); }
+.robot[data-dir="down"]  .face { transform: translateY(14%); }
+
+.robot.bump .bot { animation: bump .32s ease; }
+.robot.bump .eye { background: #fb7185; box-shadow: 0 0 6px #fb7185; }
+@keyframes bump {
+  25% { transform: translate(var(--bx), var(--by)); }
+  60% { transform: translate(calc(var(--bx) * -0.4), calc(var(--by) * -0.4)); }
+}
+.robot.happy .bot { animation: hop .5s ease 2; }
+.robot.happy .eye { background: #86efac; box-shadow: 0 0 8px #86efac; }
+@keyframes hop { 50% { transform: translateY(-22%); } }
+
+@keyframes shake {
+  20% { transform: translateX(-4px); } 40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); } 80% { transform: translateX(3px); }
+}
+

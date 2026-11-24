@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Semester</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <a href="../../index.html" class="back-btn" title="Back to the main menu">← Menu</a>
+    <div class="top-title">
+      <h1>My Semester</h1>
+      <p id="subtitle" class="muted"></p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Key figures -->
+    <section class="kpis" id="kpis" aria-label="Key figures"></section>
+
+    <div class="grid two">
+      <section class="card">
+        <div class="card-head">
+          <h2>Attendance by week</h2>
+          <p class="muted" id="weekSub"></p>
+        </div>
+        <div id="weekChart" class="chart"></div>
+        <details class="table-view">
+          <summary>Show as table</summary>
+          <div id="weekTable"></div>
+        </details>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>By course</h2>
+          <div class="legend">
+            <span><i class="key k1"></i>Attendance</span>
+            <span><i class="key k2"></i>Submissions</span>
+          </div>
+        </div>
+        <div id="courseChart" class="course-chart"></div>
+        <details class="table-view">
+          <summary>Show as table</summary>
+          <div id="courseTable"></div>
+        </details>
+      </section>
+    </div>
+
+    <div class="grid wide-left">
+      <section class="card">
+        <div class="card-head">
+          <h2>Upcoming classes</h2>
+          <p class="muted">Importance comes from the course, deadlines, exams and session notes.</p>
+        </div>
+        <ol id="upcoming" class="upcoming"></ol>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2>Next deadlines</h2></div>
+        <ul id="deadlines" class="deadlines"></ul>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Achievements</h2>
+        <p class="muted" id="achSub"></p>
+      </div>
+      <div class="ach-layout">
+        <div id="achievements" class="achievements"></div>
+        <aside class="side">
+          <div class="fact-card">
+            <h3>Fact of the day</h3>
+            <p id="factText"></p>
+            <p class="muted small" id="factFrom"></p>
+            <button id="factNext" class="btn">Another fact</button>
+          </div>
+          <div class="numbers">
+            <h3>By the numbers</h3>
+            <dl id="numbers"></dl>
+            <div class="coffee">
+              <span>☕ Cups of coffee</span>
+              <div class="coffee-ctrl">
+                <button id="coffeeMinus" class="btn small" aria-label="One cup less">−</button>
+                <b id="coffeeCount">0</b>
+                <button id="coffeePlus" class="btn small" aria-label="One cup more">+1</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Attendance record</h2>
+        <p class="muted">Click a past class to mark it as attended or not.</p>
+      </div>
+      <div class="filter-row">
+        <label class="select">
+          <span>Semester</span>
+          <select id="recSem"></select>
+        </label>
+        <span id="recSummary" class="muted summary"></span>
+      </div>
+      <div class="legend records-legend">
+        <span><i class="cell-key attended"></i>Attended</span>
+        <span><i class="cell-key missed"></i>Not attended</span>
+        <span><i class="cell-key future"></i>Upcoming</span>
+      </div>
+      <div id="records" class="records"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2>Assignments</h2>
+        <p class="muted graded-legend">Tick an assignment once it is handed in.
+          <span class="graded-tag">🎓 Graded</span> counts toward the final grade.</p>
+      </div>
+      <div class="filter-row">
+        <label class="select">
+          <span>Semester</span>
+          <select id="asSem"></select>
+        </label>
+        <div id="asStatus" class="seg" role="group" aria-label="Filter by status"></div>
+        <div id="asType" class="seg" role="group" aria-label="Filter by type"></div>
+      </div>
+      <div id="asCourses" class="chips" role="group" aria-label="Filter by course"></div>
+      <p id="asSummary" class="muted summary"></p>
+      <div id="assignments" class="as-box" tabindex="0" aria-label="Assignment list"></div>
+    </section>
+
+    <footer class="foot">
+      <span class="muted">Sample data. A lecturer can replace it in <code>shared/semesters.js</code>. Your ticks are saved in this browser.</span>
+      <button id="resetBtn" class="link-btn">Reset my changes</button>
+    </footer>
+  </main>
+
+  <div id="tip" class="tip" role="tooltip"></div>
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="../../shared/semesters.js"></script>
+  <script src="../../shared/progress.js"></script>
+  <script src="../../shared/rewards.js"></script>
+  <script src="achievements.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

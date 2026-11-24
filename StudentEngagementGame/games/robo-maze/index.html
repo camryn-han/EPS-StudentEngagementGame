@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robo Maze</title>
+  <link rel="stylesheet" href="board.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="skins.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a href="../../index.html" class="back-btn" title="Back to the main menu">← Menu</a>
+      <span class="logo" aria-hidden="true">🤖</span>
+      <div>
+        <h1>Robo Maze</h1>
+        <p class="tagline">Program the robot. Unlock tiles with knowledge.</p>
+      </div>
+    </div>
+    <div class="top-controls">
+      <label class="level-select">
+        <span>Level</span>
+        <select id="levelSelect"></select>
+      </label>
+      <a id="shopBtn" class="shop-btn" href="../reward-shop/index.html#skins" title="Spend your coins on new maze looks in the Reward Shop">
+        🛒 Shop
+        <span class="coins" id="coinsBadge">💰 <span id="coins">0</span></span>
+      </a>
+      <div class="score-box" title="Total score">
+        <span class="score-label">Score</span>
+        <span id="score" class="score-value">0</span>
+      </div>
+      <button id="soundBtn" class="icon-btn" title="Sound on/off" aria-label="Toggle sound">🔊</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="board-area">
+      <div class="level-head">
+        <h2 id="levelName">Level</h2>
+        <p id="levelHint" class="hint"></p>
+      </div>
+      <div class="board-frame">
+        <div id="board" class="board" aria-label="Maze"></div>
+      </div>
+      <div class="legend">
+        <span><i class="swatch sw-floor"></i>Floor</span>
+        <span><i class="swatch sw-wall"></i>Wall</span>
+        <span><i class="swatch sw-lock" id="legendLock">🔒</i>Locked: click it when the robot stands next to it</span>
+        <span><i class="swatch sw-goal" id="legendGoal">🏁</i>Goal</span>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <div class="card stats">
+        <div class="stat"><span class="stat-value" id="statSteps">0</span><span class="stat-label">Steps</span></div>
+        <div class="stat"><span class="stat-value good" id="statCorrect">0</span><span class="stat-label">Correct</span></div>
+        <div class="stat"><span class="stat-value bad" id="statWrong">0</span><span class="stat-label">Wrong</span></div>
+        <div class="stat"><span class="stat-value" id="statLocks">0</span><span class="stat-label">Locks left</span></div>
+      </div>
+
+      <div class="card">
+        <h3>Movement actions</h3>
+        <div class="dpad">
+          <button class="dir-btn" data-dir="up" style="grid-area:up" title="Up (↑ / W)">↑</button>
+          <button class="dir-btn" data-dir="left" style="grid-area:left" title="Left (← / A)">←</button>
+          <button class="dir-btn" data-dir="down" style="grid-area:down" title="Down (↓ / S)">↓</button>
+          <button class="dir-btn" data-dir="right" style="grid-area:right" title="Right (→ / D)">→</button>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="instantMode">
+          <span>Instant mode: each action runs right away</span>
+        </label>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Program</h3>
+          <span class="muted" id="programInfo">empty</span>
+        </div>
+        <div id="program" class="program" aria-live="polite"></div>
+        <div class="run-row">
+          <button id="runBtn" class="btn primary">▶ Run</button>
+          <button id="stepBtn" class="btn">Step</button>
+          <button id="undoBtn" class="btn" title="Remove last action (Backspace)">⌫</button>
+          <button id="clearBtn" class="btn" title="Clear program">Clear</button>
+        </div>
+        <div class="run-row">
+          <button id="resetBtn" class="btn ghost">↺ Robot to start</button>
+          <label class="speed">
+            <span>Speed</span>
+            <input type="range" id="speed" min="1" max="5" value="3">
+          </label>
+        </div>
+      </div>
+
+      <details class="card help" open>
+        <summary>How to play</summary>
+        <ol>
+          <li>Add movement actions with the arrows (or keyboard ↑ ↓ ← → / WASD).</li>
+          <li>Press <b>Run</b> (or Enter) and the robot walks your program.</li>
+          <li>🔒 tiles block the way. Move next to one and click it, or walk into it, to get a question.</li>
+          <li>Answer correctly and the tile opens. Then press Run again to continue.</li>
+          <li>Reach 🏁 to finish the level.</li>
+        </ol>
+        <p class="muted">Correct answer +100 · wrong answer −25 · goal +200<br>
+          Every point you earn also lands in your 💰 coins. Spend them in the Reward Shop.</p>
+      </details>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <!-- Question dialog -->
+  <div id="qModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="qText">
+    <div class="modal-card">
+      <div class="q-head">
+        <span class="q-topic" id="qTopic">Topic</span>
+        <span class="q-lock">🔒 Unlock this tile</span>
+      </div>
+      <p class="q-text" id="qText">Question?</p>
+      <pre class="q-code hidden" id="qCode"></pre>
+      <div class="q-options" id="qOptions"></div>
+      <div class="q-feedback hidden" id="qFeedback"></div>
+      <div class="q-actions">
+        <button id="qCancel" class="btn ghost">Not now</button>
+        <button id="qContinue" class="btn primary hidden">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Level complete dialog -->
+  <div id="winModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="winTitle">
+    <div class="modal-card win-card">
+      <div class="confetti" aria-hidden="true">🎉</div>
+      <h2 id="winTitle">Goal reached!</h2>
+      <div class="stars" id="winStars"></div>
+      <div class="win-stats" id="winStats"></div>
+      <div class="q-actions">
+        <button id="replayBtn" class="btn ghost">Replay level</button>
+        <button id="nextBtn" class="btn primary">Next level →</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="levels.js"></script>
+  <script src="skins.js"></script>
+  <script src="../../shared/rewards.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

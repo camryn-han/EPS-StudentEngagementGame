@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Course Feedback</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <a href="../../index.html" class="back-btn" title="Back to the main menu">← Menu</a>
+    <div class="top-title">
+      <h1>Course Feedback</h1>
+      <p id="subtitle" class="muted"></p>
+    </div>
+    <div id="roleSwitch" class="seg role-switch" role="group" aria-label="Choose view">
+      <button type="button" class="seg-btn" data-role="student">🎒 Student</button>
+      <button type="button" class="seg-btn" data-role="lecturer">📋 Lecturer</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Student view -->
+    <section id="studentView" hidden>
+      <div id="studentList">
+        <div class="card anon-card">
+          <span class="anon-icon" aria-hidden="true">🔒</span>
+          <div>
+            <h2>Your feedback is anonymous</h2>
+            <ul>
+              <li>Your name is never saved with your answers.</li>
+              <li>Lecturers only see percentages and comments, and only once at least <b id="minResp">3</b> students have answered.</li>
+              <li>Comments are shown in mixed order, never by the time they were sent.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <h2>Your courses</h2>
+            <p class="muted" id="roundInfo"></p>
+          </div>
+          <div id="courseList" class="course-list"></div>
+        </div>
+      </div>
+      <div id="studentForm" hidden></div>
+    </section>
+
+    <!-- Lecturer view -->
+    <section id="lecturerView" hidden>
+      <div class="card">
+        <div class="filter-row">
+          <label class="select"><span>Semester</span><select id="lvSem"></select></label>
+          <label class="select"><span>Course</span><select id="lvCourse"></select></label>
+          <div id="lvRound" class="seg" role="group" aria-label="Feedback round"></div>
+        </div>
+        <div class="tabs" role="tablist">
+          <button type="button" class="tab" role="tab" data-tab="results">Results</button>
+          <button type="button" class="tab" role="tab" data-tab="questions">Questions</button>
+        </div>
+      </div>
+      <div id="resultsPanel" class="panel"></div>
+      <div id="questionsPanel" class="panel" hidden></div>
+    </section>
+
+    <footer class="foot">
+      <span class="muted">Demo: answers are saved in this browser only, and the lecturer view mixes in made-up sample answers.
+        Courses and lecturers come from <code>shared/semesters.js</code>, questions from <code>games/course-feedback/questions.js</code>.</span>
+    </footer>
+  </main>
+
+  <div id="tip" class="tip" role="tooltip"></div>
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="../../shared/semesters.js"></script>
+  <script src="../../shared/progress.js"></script>
+  <script src="../../shared/rewards.js"></script>
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

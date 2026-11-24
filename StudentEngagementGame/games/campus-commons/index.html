@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Campus Commons</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <a href="../../index.html" class="back-btn" title="Back to the main menu">← Menu</a>
+    <div class="top-title">
+      <h1>Campus Commons</h1>
+      <p id="subtitle" class="muted">Show your work, share your view. A safe space for everyone.</p>
+    </div>
+    <div id="roleSwitch" class="seg role-switch" role="group" aria-label="Choose view">
+      <button type="button" class="seg-btn" data-role="student">🎒 Student</button>
+      <button type="button" class="seg-btn" data-role="staff">🏛️ Staff</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="side-top">
+      <button type="button" id="newPost" class="btn primary big">✏️ New post</button>
+      <div class="card filters">
+        <h2>From</h2>
+        <div id="sourceFilter" class="src-list" role="group" aria-label="Filter by author"></div>
+        <label class="field compact"><span>Course</span><select id="courseFilter"></select></label>
+        <label class="check"><input type="checkbox" id="mineFilter"> ✍️ Only my posts</label>
+      </div>
+    </aside>
+
+    <section class="feed-col" aria-label="Posts">
+      <div class="type-tabs" id="typeTabs" role="tablist" aria-label="Filter by type"></div>
+      <div class="feed-tools">
+        <input type="search" id="search" placeholder="Search titles, text, tags and names" aria-label="Search">
+        <div id="sortSeg" class="seg" role="group" aria-label="Sort">
+          <button type="button" class="seg-btn" data-sort="new">Newest</button>
+          <button type="button" class="seg-btn" data-sort="top">Most reactions</button>
+          <button type="button" class="seg-btn" data-sort="talk">Most comments</button>
+        </div>
+      </div>
+      <p id="feedIntro" class="feed-intro"></p>
+      <div id="feed"></div>
+      <p id="hiddenNote" class="hidden-note" hidden></p>
+    </section>
+
+    <aside class="side-bottom">
+      <div class="card">
+        <h2>📅 Coming up</h2>
+        <ul id="events" class="events"></ul>
+      </div>
+      <div class="card guide">
+        <h2>🕊️ A safe space</h2>
+        <ul id="guidelines"></ul>
+        <p class="muted small">No downvotes here, only kind reactions. Posts can be anonymous, projects always show their makers.</p>
+      </div>
+    </aside>
+  </main>
+
+  <div id="modal" class="modal" hidden>
+    <div id="modalCard" class="modal-card" role="dialog" aria-modal="true"></div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="../../shared/semesters.js"></script>
+  <script src="../../shared/progress.js"></script>
+  <script src="../../shared/rewards.js"></script>
+  <script src="posts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

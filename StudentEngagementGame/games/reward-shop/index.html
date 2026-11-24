@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reward Shop</title>
+  <link rel="stylesheet" href="../robo-maze/board.css">
+  <link rel="stylesheet" href="../robo-maze/skins.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <a href="../../index.html" class="back-btn" title="Back to the main menu">← Menu</a>
+    <div class="top-title">
+      <h1>Reward Shop</h1>
+      <p class="muted">Earn by studying, spend on rewards.</p>
+    </div>
+    <div class="wallet" aria-label="Your balance">
+      <span class="pill stars" data-tip="Stars: earned by attending, handing in and giving feedback">⭐ <b id="starsBal">0</b></span>
+      <span class="pill coins" data-tip="Coins: earned in the games">💰 <b id="coinsBal">0</b></span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="profile" id="profile"></section>
+
+    <nav class="tabs" id="tabs" role="tablist">
+      <button type="button" class="tab" data-tab="rewards">🎁 Rewards</button>
+      <button type="button" class="tab" data-tab="emergency">🆘 Emergency</button>
+      <button type="button" class="tab" data-tab="skins">🎨 Skins</button>
+      <button type="button" class="tab" data-tab="mine">🎒 My stuff</button>
+      <button type="button" class="tab" data-tab="earn">⭐ How to earn</button>
+    </nav>
+
+    <section class="panel" data-panel="rewards">
+      <p class="lead">Real rewards for showing up and handing in. Paid with ⭐ Stars only, so playing games alone cannot buy them.</p>
+      <div class="grid" id="rewardGrid"></div>
+    </section>
+
+    <section class="panel" data-panel="emergency" hidden>
+      <p class="lead">For the weeks when things go wrong. Paid with ⭐ Stars.</p>
+      <div class="grid" id="emergencyGrid"></div>
+    </section>
+
+    <section class="panel" data-panel="skins" hidden>
+      <p class="lead">New looks, paid with 💰 Coins from the games.</p>
+      <h2 class="sec-h">Robo Maze skins</h2>
+      <div class="grid skins" id="mazeGrid"></div>
+      <h2 class="sec-h">Menu themes</h2>
+      <div class="grid themes" id="themeGrid"></div>
+      <h2 class="sec-h">Avatars</h2>
+      <div class="avatar-grid" id="avatarGrid"></div>
+    </section>
+
+    <section class="panel" data-panel="mine" hidden>
+      <div class="two-col">
+        <div class="box">
+          <h2 class="sec-h">Inventory</h2>
+          <div id="inventory"></div>
+        </div>
+        <div class="box">
+          <h2 class="sec-h">Vouchers</h2>
+          <div id="vouchers"></div>
+        </div>
+      </div>
+      <div class="box">
+        <h2 class="sec-h">Recent activity</h2>
+        <ul class="feed" id="feed"></ul>
+      </div>
+    </section>
+
+    <section class="panel" data-panel="earn" hidden>
+      <div class="two-col">
+        <div class="box">
+          <h2 class="sec-h">⭐ Stars</h2>
+          <table class="rules" id="starRules"></table>
+        </div>
+        <div class="box">
+          <h2 class="sec-h">💰 Coins</h2>
+          <table class="rules" id="coinRules"></table>
+        </div>
+      </div>
+      <div class="box">
+        <h2 class="sec-h">Where your Stars come from</h2>
+        <table class="rules" id="breakdown"></table>
+      </div>
+    </section>
+
+    <footer class="foot muted">
+      Demo: balances and vouchers are saved in this browser only. In real use attendance and hand-ins should come from the
+      lecturers, not from the students' own ticks. Prices are set in <code>games/reward-shop/items.js</code>.
+    </footer>
+  </main>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" id="modalCard"></div>
+  </div>
+  <div id="tip" class="tip" role="tooltip"></div>
+
+  <script src="../../shared/semesters.js"></script>
+  <script src="../../shared/progress.js"></script>
+  <script src="../../shared/rewards.js"></script>
+  <script src="../robo-maze/skins.js"></script>
+  <script src="items.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

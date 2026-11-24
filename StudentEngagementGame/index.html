@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Study Arcade</title>
+  <link rel="stylesheet" href="hub/hub.css">
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <a id="profileChip" class="profile-chip" href="games/reward-shop/index.html" title="Open the Reward Shop" hidden></a>
+
+  <header class="hub-head">
+    <div class="hub-logo" aria-hidden="true">🎓</div>
+    <h1>Study Arcade</h1>
+    <p>Learn by playing. Choose a game to start.</p>
+  </header>
+
+  <main>
+    <nav id="gameRow" class="game-row" aria-label="Games"></nav>
+  </main>
+
+  <footer class="hub-foot">
+    <span><kbd>←</kbd> <kbd>→</kbd> choose</span>
+    <span><kbd>Enter</kbd> start</span>
+  </footer>
+
+  <script src="shared/semesters.js"></script>
+  <script src="shared/progress.js"></script>
+  <script src="shared/rewards.js"></script>
+  <script src="games/reward-shop/items.js"></script>
+  <script src="hub/games.js"></script>
+  <script src="hub/hub.js"></script>
+</body>
+</html>
